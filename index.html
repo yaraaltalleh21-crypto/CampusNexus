@@ -1,0 +1,2697 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Campus360 — Smart University Facilities Management</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --acc:#4f8a7b;
+  --acc-hover:#3f7265;
+  --side:#1f3a34;
+  --side-hover:#2a4a42;
+  --mut:#7a8a83;
+  --line:#e4ebe7;
+  --bg:#f3f6f4;
+  --card:#ffffff;
+  --text:#23302b;
+  --gold:#c9a96e;
+}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.45;
+  transition:background .25s ease, color .25s ease;
+}
+
+/* Layout */
+.app{display:flex;min-height:100vh}
+
+/* Sidebar */
+.side{
+  width:230px;
+  background:var(--side);
+  color:#dbe7e2;
+  padding:20px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  z-index:20;
+  transition:transform .25s ease;
+  user-select:none;
+}
+.brand{
+  font-size:19px;
+  font-weight:700;
+  padding:4px 10px 18px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:-0.2px;
+}
+.brand b{color:var(--gold)}
+.brand .logo-icon{font-size:22px}
+
+.nav{
+  background:none;
+  color:#b9cbc4;
+  text-align:left;
+  padding:10px 12px;
+  border-radius:10px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-size:14px;
+  font-weight:500;
+  border:0;
+  cursor:pointer;
+  transition:background .18s, color .18s;
+  width:100%;
+}
+.nav:hover{background:var(--side-hover);color:#fff}
+.nav.on{background:var(--acc);color:#fff;font-weight:600}
+.nav span{font-size:16px;width:20px;text-align:center;display:inline-block}
+.nav em{
+  margin-left:auto;
+  background:var(--gold);
+  color:#1f3a34;
+  border-radius:10px;
+  padding:1px 7px;
+  font-style:normal;
+  font-size:11px;
+  font-weight:700;
+}
+
+.side-foot{
+  margin-top:auto;
+  font-size:11.5px;
+  color:#8fa79f;
+  padding:10px 8px 4px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.side-foot .foot-acts{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:8px;
+}
+.side-foot button{
+  background:#2a4a42;
+  color:#dbe7e2;
+  padding:6px 10px;
+  font-size:12px;
+  border-radius:8px;
+  text-align:center;
+}
+.side-foot button:hover{background:#355c52;color:#fff}
+
+/* Main Content Area */
+main{margin-left:230px;flex:1;min-width:0;display:flex;flex-direction:column}
+
+/* Top Sticky Header */
+.top{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(243,246,244,.95);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 28px;
+  border-bottom:1px solid var(--line);
+  transition:background .25s ease, border-color .25s ease;
+}
+.top h1{font-size:19px;margin:0;flex:1;font-weight:650;letter-spacing:-0.2px}
+.top-actions{display:flex;align-items:center;gap:10px}
+
+.burger{
+  display:none;
+  font-size:18px;
+  padding:6px 10px;
+  background:#eef3f0;
+  color:#1f3a34;
+  border-radius:8px;
+}
+
+.theme-toggle{
+  background:var(--card);
+  color:inherit;
+  border:1px solid var(--line);
+  padding:7px 11px;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  font-weight:500;
+}
+.theme-toggle:hover{background:#eef3f0}
+
+/* Body */
+.body{padding:24px 28px;display:flex;flex-direction:column;gap:18px}
+
+/* Cards */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px 20px;
+  min-width:0;
+  transition:box-shadow .2s ease, background .25s ease, border-color .25s ease;
+}
+.card:hover{box-shadow:0 3px 14px rgba(0,0,0,0.04)}
+.card h2{
+  font-size:15px;
+  margin:0 0 14px;
+  font-weight:650;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* Grids */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+
+/* Stat Cards */
+.stat{display:flex;gap:14px;align-items:center}
+.stat .ic{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  flex:none;
+  transition:transform .2s;
+}
+.stat:hover .ic{transform:scale(1.06)}
+.stat .v{font-size:24px;font-weight:700;line-height:1.2}
+.stat .l{color:var(--mut);font-size:12.5px;font-weight:500;margin-top:2px}
+.stat .s{font-size:11.5px;color:var(--mut);margin-top:1px}
+
+/* Buttons */
+button{
+  font:inherit;
+  cursor:pointer;
+  border-radius:9px;
+  padding:8px 14px;
+  border:0;
+  background:var(--acc);
+  color:#fff;
+  font-weight:500;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:background .15s, transform .1s;
+}
+button:hover{background:var(--acc-hover)}
+button:active{transform:scale(0.98)}
+button.ghost{
+  background:#eef3f0;
+  color:#2f4a42;
+  padding:6px 11px;
+  font-size:13px;
+  font-weight:500;
+}
+button.ghost:hover{background:#dfe9e4}
+button.danger{color:#b1483f;background:#fdf2f1}
+button.danger:hover{background:#fbe4e2}
+button.danger-solid{background:#c4625a;color:#fff}
+button.danger-solid:hover{background:#b1483f}
+button.success-ghost{background:#edf6f0;color:#357a4a}
+button.success-ghost:hover{background:#ddede2}
+
+/* Inputs & Form */
+input,select,textarea{
+  font:inherit;
+  border:1px solid #d5dfda;
+  border-radius:9px;
+  padding:8px 11px;
+  background:#fff;
+  color:inherit;
+  min-width:0;
+  outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--acc);
+  box-shadow:0 0 0 3px rgba(79,138,123,0.18);
+}
+.bar-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar-row input{flex:1;min-width:200px}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{
+  text-align:left;
+  color:var(--mut);
+  font-weight:600;
+  font-size:12px;
+  padding:9px 10px;
+  border-bottom:1px solid var(--line);
+  user-select:none;
+}
+th.sortable{cursor:pointer;position:relative;padding-right:20px}
+th.sortable:hover{color:var(--acc)}
+th.sortable::after{
+  content:"\21C5";
+  position:absolute;
+  right:4px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:11px;
+  opacity:0.35;
+}
+th.sortable.asc::after{content:"\25B2";opacity:0.9;color:var(--acc)}
+th.sortable.desc::after{content:"\25BC";opacity:0.9;color:var(--acc)}
+
+td{
+  padding:10px 10px;
+  border-bottom:1px solid #f0f4f2;
+  vertical-align:middle;
+  transition:background .15s;
+}
+tr:hover td{background:rgba(79,138,123,0.03)}
+tr.sel td{background:#f3f8f6}
+tr.dmg td{background:#fdf5f4}
+.wrap{overflow-x:auto}
+.acts-c{white-space:nowrap;text-align:right}
+.acts-c button{margin-left:4px}
+.inl{padding:4px 8px;font-size:12.5px;border-radius:7px}
+
+/* Badges */
+.badge{
+  display:inline-block;
+  padding:3px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  background:color-mix(in srgb,var(--t) 14%,transparent);
+  color:var(--t);
+  white-space:nowrap;
+}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{
+  background:#fff;
+  color:var(--mut);
+  border:1px solid var(--line);
+  padding:6px 12px;
+  font-size:13px;
+  border-radius:9px;
+}
+.tabs button:hover{background:#f7faf8}
+.tabs button.on{
+  background:var(--acc);
+  color:#fff;
+  border-color:var(--acc);
+  font-weight:600;
+}
+
+/* Chart Bars */
+.bars{display:flex;align-items:flex-end;gap:12px;height:210px;padding-top:14px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar{
+  width:100%;
+  max-width:54px;
+  background:linear-gradient(180deg,#6fa597,#4f8a7b);
+  border-radius:7px 7px 3px 3px;
+  min-height:4px;
+  transition:height .45s ease;
+}
+.bv{font-size:12px;font-weight:600;color:var(--mut);margin-bottom:4px}
+.bl{font-size:12px;font-weight:500;margin-top:6px;color:var(--mut);text-align:center}
+
+/* Donut Chart */
+.donut{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center;padding:8px 0}
+.lg div{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:13px}
+.lg i{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+
+/* Lists */
+.list .it{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #f0f4f2;align-items:flex-start}
+.list .it:last-child{border:0}
+.dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:none}
+.muted{color:var(--mut);font-size:12px}
+
+/* Bell & Notifications Dropdown */
+.bellw{position:relative}
+.bell{
+  background:var(--card);
+  color:inherit;
+  border:1px solid var(--line);
+  padding:7px 11px;
+  position:relative;
+  font-size:15px;
+  border-radius:9px;
+}
+.bell:hover{background:#eef3f0}
+.bell i{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:#c4625a;
+  color:#fff;
+  font-style:normal;
+  font-size:10.5px;
+  font-weight:700;
+  border-radius:10px;
+  padding:1px 6px;
+  line-height:1.2;
+}
+.dd{
+  position:absolute;
+  right:0;
+  top:46px;
+  width:320px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 12px 36px rgba(0,0,0,0.12);
+  padding:10px;
+  z-index:30;
+  animation:pop-in .18s ease;
+}
+.dd-head{font-weight:650;font-size:13.5px;padding:4px 8px 8px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.ddi{padding:9px 8px;font-size:12.5px;border-bottom:1px solid #f0f4f2;display:flex;align-items:center;gap:8px}
+.dd-foot{padding:8px 8px 4px;text-align:center}
+.dd-foot button{width:100%}
+
+/* Avatar */
+.avatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--gold);
+  color:#1f3a34;
+  display:grid;
+  place-items:center;
+  font-weight:700;
+  font-size:12.5px;
+  user-select:none;
+}
+
+/* Modals */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(20,35,30,.4);
+  backdrop-filter:blur(3px);
+  display:grid;
+  place-items:center;
+  z-index:50;
+  padding:16px;
+  animation:fade-in .18s ease;
+}
+.modal{
+  background:var(--card);
+  border-radius:16px;
+  width:min(500px,100%);
+  padding:22px;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 18px 44px rgba(0,0,0,0.16);
+  animation:pop-in .2s ease;
+}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mh h3{margin:0;font-size:17px;font-weight:650}
+.modal form{display:grid;gap:13px}
+.modal label{display:grid;gap:5px;font-size:12.5px;color:var(--mut);font-weight:500}
+.modal label input, .modal label select, .modal label textarea{color:var(--text)}
+.field-error{color:#b1483f !important}
+.field-error input, .field-error select, .field-error textarea{border-color:#b1483f !important}
+.err-msg{color:#b1483f;font-size:11.5px}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+
+/* Confirm Dialog */
+.confirm-box{
+  background:var(--card);
+  border-radius:14px;
+  width:min(380px,100%);
+  padding:22px;
+  text-align:center;
+  box-shadow:0 18px 44px rgba(0,0,0,0.18);
+  animation:pop-in .2s ease;
+}
+.confirm-icon{font-size:32px;margin-bottom:10px}
+.confirm-box h3{margin:0 0 6px;font-size:16px;font-weight:650}
+.confirm-box p{margin:0 0 18px;color:var(--mut);font-size:13.5px}
+
+/* Floor explorer */
+.floors{display:grid;gap:10px}
+.floor{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+  background:#f7faf8;
+  padding:11px;
+  border-radius:10px;
+}
+.floor b{min-width:76px;font-size:13px;color:var(--mut)}
+.chip{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:5px 9px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-size:12.5px;
+}
+
+/* Detail Grid */
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  background:#f7faf8;
+  padding:14px;
+  border-radius:10px;
+}
+
+/* Toast */
+.toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#1f3a34;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:10px;
+  z-index:60;
+  font-size:13.5px;
+  font-weight:500;
+  box-shadow:0 6px 20px rgba(0,0,0,0.2);
+  animation:toast-in .25s ease;
+}
+
+/* Pagination */
+.pagination{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:14px 0 6px;
+  font-size:13px;
+  color:var(--mut);
+}
+
+.empty{text-align:center;color:var(--mut);padding:36px;font-size:14px}
+.scrim{display:none}
+
+/* Animations */
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes pop-in{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+@keyframes toast-in{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+.fade-in{animation:fade-in .2s ease}
+
+/* Dark Mode Theme */
+body.dark{
+  --acc:#559c8c;
+  --acc-hover:#47887a;
+  --side:#121a17;
+  --side-hover:#1c2723;
+  --mut:#8fa39b;
+  --line:#2a3631;
+  --bg:#17201c;
+  --card:#1f2b26;
+  --text:#deebe4;
+}
+body.dark .top{
+  background:rgba(23,32,28,.95);
+  border-bottom-color:var(--line);
+}
+body.dark .top h1{color:#fff}
+body.dark td{border-bottom-color:#26342e}
+body.dark tr:hover td{background:rgba(85,156,140,0.06)}
+body.dark tr.sel td{background:#263630}
+body.dark tr.dmg td{background:#382725}
+body.dark input,body.dark select,body.dark textarea{
+  background:#1a2420;
+  border-color:#33443e;
+  color:var(--text);
+}
+body.dark button.ghost{background:#293731;color:#bcd2c8}
+body.dark button.ghost:hover{background:#32443d}
+body.dark button.danger{background:#382725;color:#e88078}
+body.dark button.success-ghost{background:#24362a;color:#7ed698}
+body.dark .tabs button{background:#1f2b26;border-color:var(--line);color:var(--mut)}
+body.dark .tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+body.dark .floor, body.dark .detail-grid{background:#1a2520}
+body.dark .chip{background:var(--card);border-color:var(--line)}
+body.dark .burger{background:#293731;color:#deebe4}
+body.dark .dd{background:var(--card);border-color:var(--line);box-shadow:0 12px 36px rgba(0,0,0,0.4)}
+body.dark .ddi{border-bottom-color:#2a3631}
+body.dark .toast{background:#0b110f;color:#deebe4;border:1px solid #2a3631}
+
+/* Responsive Media Queries */
+@media(max-width:1000px){
+  .grid4{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+}
+@media(max-width:860px){
+  .side{transform:translateX(-100%)}
+  .navopen .side{transform:none}
+  .navopen .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:15}
+  main{margin-left:0}
+  .burger{display:inline-flex}
+  .body{padding:16px}
+  .top{padding:12px 16px}
+}
+@media(max-width:560px){
+  .grid4{grid-template-columns:1fr}
+  .bar-row input{min-width:140px}
+}
+
+/* Print Styles */
+@media print{
+  .side,.top,.burger,.scrim,.toast,.overlay,.acts-c,.bar-row,.pagination{display:none!important}
+  main{margin-left:0!important}
+  .body{padding:0!important}
+  .card{border:1px solid #ccc;box-shadow:none!important;break-inside:avoid}
+  body{background:#fff;color:#000}
+}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React & Babel CDNs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.25.6/babel.min.js"></script>
+
+<!-- Main React Application -->
+<script type="text/babel">
+/* ============================================================
+   Campus360 — Smart University Facilities Management
+   Functional React Application
+   ============================================================ */
+
+const { useState, useEffect, useCallback, useMemo, useRef } = React;
+
+/* ---------- Utilities ---------- */
+const uid = () => Math.random().toString(36).slice(2, 9);
+const today = () => new Date().toISOString().slice(0, 10);
+const stamp = () => new Date().toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+const toMinutes = t => {
+  if (!t) return 0;
+  const [h, m] = t.split(':').map(Number);
+  return (h || 0) * 60 + (m || 0);
+};
+
+const KEY = 'campus360_db_v2';
+const DARK_KEY = 'campus360_dark_v2';
+
+/* ---------- Constants ---------- */
+const PRI = ['Urgent', 'High', 'Medium', 'Low'];
+const STAT = ['Pending', 'In Progress', 'Completed'];
+const CATS = ['Electrical', 'Plumbing', 'HVAC', 'IT', 'Furniture', 'Structural', 'Safety'];
+const STAFF = ['Khaled Nasser', 'Rana Haddad', 'Omar Saleh', 'Lina Qasim', 'Yousef Darwish', 'Hassan Zaki'];
+const ROOM_STATS = ['Available', 'Occupied', 'Maintenance'];
+const BLDG_STATS = ['Operational', 'Under Renovation', 'Needs Attention'];
+const CONDITIONS = ['Good', 'Fair', 'Damaged'];
+const RES_STATS = ['Pending', 'Approved', 'Rejected'];
+
+const TONE = {
+  Urgent: '#c4625a', High: '#d98a3c', Medium: '#c9a23c', Low: '#7fa08b',
+  Pending: '#c9a23c', 'In Progress': '#6f8fb8', Completed: '#5a9a6e',
+  Approved: '#5a9a6e', Rejected: '#c4625a',
+  Available: '#5a9a6e', Occupied: '#6f8fb8', Maintenance: '#d69a3c',
+  Good: '#5a9a6e', Fair: '#c9a23c', Damaged: '#c4625a', Unavailable: '#c4625a',
+  Operational: '#5a9a6e', 'Under Renovation': '#d69a3c', 'Needs Attention': '#c4625a',
+  Classroom: '#4f8a7b', Laboratory: '#8a6fb8'
+};
+
+const byPri = (a, b) => PRI.indexOf(a.priority) - PRI.indexOf(b.priority);
+
+/* ---------- Seed Data ---------- */
+const SEED = {
+  buildings: [
+    { code: 'KH', name: 'Al-Khwarizmi Hall', floors: 4, year: 1998, status: 'Operational' },
+    { code: 'IS', name: 'Ibn Sina Science Building', floors: 5, year: 2008, status: 'Operational' },
+    { code: 'EC', name: 'Engineering Complex', floors: 6, year: 2014, status: 'Under Renovation' },
+    { code: 'LB', name: 'Library & Learning Commons', floors: 3, year: 2002, status: 'Operational' },
+    { code: 'FA', name: 'Fine Arts Annex', floors: 2, year: 1985, status: 'Needs Attention' },
+    { code: 'MD', name: 'Medical Sciences Center', floors: 4, year: 2019, status: 'Operational' },
+    { code: 'BZ', name: 'Business & Economics Tower', floors: 7, year: 2016, status: 'Operational' }
+  ],
+  rooms: [
+    { code: 'KH-101', name: 'Lecture Hall A', type: 'Classroom', building: 'KH', floor: 1, capacity: 120, status: 'Occupied' },
+    { code: 'KH-204', name: 'Seminar Room', type: 'Classroom', building: 'KH', floor: 2, capacity: 30, status: 'Available' },
+    { code: 'KH-305', name: 'Classroom 305', type: 'Classroom', building: 'KH', floor: 3, capacity: 45, status: 'Available' },
+    { code: 'KH-102', name: 'Tutorial Room B', type: 'Classroom', building: 'KH', floor: 1, capacity: 35, status: 'Available' },
+    { code: 'IS-110', name: 'Physics Lab', type: 'Laboratory', building: 'IS', floor: 1, capacity: 24, status: 'Available' },
+    { code: 'IS-214', name: 'Chemistry Lab', type: 'Laboratory', building: 'IS', floor: 2, capacity: 20, status: 'Occupied' },
+    { code: 'IS-301', name: 'Lecture Room', type: 'Classroom', building: 'IS', floor: 3, capacity: 80, status: 'Available' },
+    { code: 'IS-115', name: 'Biology Lab', type: 'Laboratory', building: 'IS', floor: 1, capacity: 22, status: 'Available' },
+    { code: 'IS-402', name: 'Advanced Optics Lab', type: 'Laboratory', building: 'IS', floor: 4, capacity: 18, status: 'Available' },
+    { code: 'EC-102', name: 'Robotics Lab', type: 'Laboratory', building: 'EC', floor: 1, capacity: 16, status: 'Maintenance' },
+    { code: 'EC-205', name: 'Circuits Lab', type: 'Laboratory', building: 'EC', floor: 2, capacity: 24, status: 'Available' },
+    { code: 'EC-310', name: 'Classroom 310', type: 'Classroom', building: 'EC', floor: 3, capacity: 60, status: 'Occupied' },
+    { code: 'EC-401', name: 'CAD/CAM Studio', type: 'Laboratory', building: 'EC', floor: 4, capacity: 28, status: 'Available' },
+    { code: 'EC-501', name: 'Main Amphitheater', type: 'Classroom', building: 'EC', floor: 5, capacity: 180, status: 'Available' },
+    { code: 'LB-010', name: 'Study Hall', type: 'Classroom', building: 'LB', floor: 0, capacity: 150, status: 'Available' },
+    { code: 'LB-120', name: 'Computer Lab 1', type: 'Laboratory', building: 'LB', floor: 1, capacity: 40, status: 'Occupied' },
+    { code: 'LB-210', name: 'Digital Media Lab', type: 'Laboratory', building: 'LB', floor: 2, capacity: 25, status: 'Available' },
+    { code: 'FA-101', name: 'Ceramics Studio', type: 'Laboratory', building: 'FA', floor: 1, capacity: 18, status: 'Available' },
+    { code: 'FA-102', name: 'Painting Studio', type: 'Classroom', building: 'FA', floor: 1, capacity: 22, status: 'Available' },
+    { code: 'MD-101', name: 'Anatomy Lab', type: 'Laboratory', building: 'MD', floor: 1, capacity: 32, status: 'Occupied' },
+    { code: 'MD-201', name: 'Simulation Clinic', type: 'Laboratory', building: 'MD', floor: 2, capacity: 20, status: 'Available' },
+    { code: 'MD-301', name: 'Medical Auditorium', type: 'Classroom', building: 'MD', floor: 3, capacity: 220, status: 'Available' },
+    { code: 'BZ-101', name: 'Executive Auditorium', type: 'Classroom', building: 'BZ', floor: 1, capacity: 260, status: 'Available' },
+    { code: 'BZ-301', name: 'Financial Markets Lab', type: 'Laboratory', building: 'BZ', floor: 3, capacity: 36, status: 'Available' },
+    { code: 'BZ-501', name: 'Boardroom', type: 'Classroom', building: 'BZ', floor: 5, capacity: 30, status: 'Occupied' }
+  ],
+  equipment: [
+    { id: 'E1', name: 'Oscilloscope (DS1054Z)', room: 'IS-110', condition: 'Good', available: true, service: '2026-09-12' },
+    { id: 'E2', name: 'UV-Vis Spectrometer', room: 'IS-110', condition: 'Fair', available: true, service: '2026-06-03' },
+    { id: 'E3', name: 'Fume Hood FH-2', room: 'IS-214', condition: 'Damaged', available: false, service: '2026-02-20' },
+    { id: 'E4', name: 'Digital Microscope (x6)', room: 'IS-214', condition: 'Good', available: true, service: '2026-08-30' },
+    { id: 'E5', name: '3D Printer (Prusa MK4)', room: 'EC-102', condition: 'Damaged', available: false, service: '2026-05-14' },
+    { id: 'E6', name: '6-DOF Robot Arm Kit', room: 'EC-102', condition: 'Fair', available: true, service: '2026-07-21' },
+    { id: 'E7', name: 'Oscilloscope (Tektronix)', room: 'EC-205', condition: 'Good', available: true, service: '2026-10-02' },
+    { id: 'E8', name: 'Workstation PCs (x40)', room: 'LB-120', condition: 'Fair', available: true, service: '2026-04-18' },
+    { id: 'E9', name: 'Laser Projector 4K', room: 'KH-101', condition: 'Good', available: true, service: '2026-09-01' },
+    { id: 'E10', name: "Electric Pottery Wheel (x4)", room: 'FA-101', condition: 'Good', available: true, service: '2026-10-10' },
+    { id: 'E11', name: 'High-Speed Centrifuge', room: 'IS-115', condition: 'Good', available: true, service: '2026-08-15' },
+    { id: 'E12', name: 'PCR Thermal Cycler', room: 'IS-115', condition: 'Good', available: true, service: '2026-07-20' },
+    { id: 'E13', name: 'Laser Interferometer', room: 'IS-402', condition: 'Fair', available: true, service: '2026-05-28' },
+    { id: 'E14', name: '5-Axis CNC Milling Machine', room: 'EC-401', condition: 'Good', available: true, service: '2026-09-22' },
+    { id: 'E15', name: 'Digital Logic Analyzer', room: 'EC-205', condition: 'Good', available: true, service: '2026-10-05' },
+    { id: 'E16', name: '4K Video Editing Station', room: 'LB-210', condition: 'Good', available: true, service: '2026-06-10' },
+    { id: 'E17', name: '3D Anatomical Dissection Table', room: 'MD-101', condition: 'Good', available: true, service: '2026-03-15' },
+    { id: 'E18', name: 'Patient Simulator Mannequin', room: 'MD-201', condition: 'Fair', available: true, service: '2026-04-20' },
+    { id: 'E19', name: 'Bloomberg Terminals (x8)', room: 'BZ-301', condition: 'Good', available: true, service: '2026-08-01' },
+    { id: 'E20', name: 'Interactive Smart Board 85"', room: 'BZ-101', condition: 'Good', available: true, service: '2026-09-30' }
+  ],
+  reservations: [
+    { id: 'R1', room: 'IS-110', who: 'Dr. Lina Haddad', purpose: 'Optics Practical Exam', date: '2026-11-02', start: '09:00', end: '11:00', status: 'Pending' },
+    { id: 'R2', room: 'KH-204', who: 'Student Council', purpose: 'Debate Championship Prep', date: '2026-11-03', start: '14:00', end: '16:00', status: 'Pending' },
+    { id: 'R3', room: 'EC-205', who: 'Prof. Omar Saleh', purpose: 'Embedded Circuits Exam', date: '2026-11-02', start: '10:00', end: '12:00', status: 'Approved' },
+    { id: 'R4', room: 'LB-010', who: 'Library Events Committee', purpose: 'Annual Academic Book Fair', date: '2026-11-05', start: '10:00', end: '18:00', status: 'Approved' },
+    { id: 'R5', room: 'FA-101', who: 'Nour Khalil', purpose: 'Graduate Portfolio Review', date: '2026-11-04', start: '13:00', end: '15:00', status: 'Rejected' },
+    { id: 'R6', room: 'MD-301', who: 'Dr. Aisha Mansour', purpose: 'Cardiology Symposium', date: '2026-11-03', start: '08:00', end: '11:00', status: 'Approved' },
+    { id: 'R7', room: 'BZ-101', who: 'Dean of Business', purpose: 'Dean Honor Roll Ceremony', date: '2026-11-06', start: '09:00', end: '13:00', status: 'Pending' },
+    { id: 'R8', room: 'KH-305', who: 'Prof. Firas Nabulsi', purpose: 'Algorithms Lab Tutorial', date: '2026-11-02', start: '13:00', end: '15:00', status: 'Approved' },
+    { id: 'R9', room: 'IS-115', who: 'Dr. Samar Khoury', purpose: 'Microbiology Cell Culture Demo', date: '2026-11-04', start: '10:00', end: '12:00', status: 'Pending' },
+    { id: 'R10', room: 'EC-401', who: 'Robotics & Eng Club', purpose: 'Rapid Prototyping Workshop', date: '2026-11-05', start: '14:00', end: '17:00', status: 'Approved' }
+  ],
+  requests: [
+    { id: 'M1', title: 'Fume hood airflow alarm ringing', cat: 'HVAC', room: 'IS-214', by: 'Chem TA Sara Ali', desc: 'Airflow sensor drops below safe threshold intermittently. Lab requires inspection.', priority: 'Urgent', status: 'In Progress', assignee: 'Rana Haddad', date: '2026-10-28' },
+    { id: 'M2', title: 'Ceiling projector lamp failure', cat: 'IT', room: 'KH-101', by: 'Dr. Hassan Odeh', desc: 'Projector turns off automatically after 2 minutes of operation.', priority: 'High', status: 'Pending', assignee: '', date: '2026-10-29' },
+    { id: 'M3', title: 'Drain pipe leak under wash basin', cat: 'Plumbing', room: 'EC-310', by: 'Student Facilities Report', desc: 'Active water leak beneath rear laboratory sink.', priority: 'Medium', status: 'Pending', assignee: '', date: '2026-10-29' },
+    { id: 'M4', title: 'Flickering fluorescent fixtures', cat: 'Electrical', room: 'LB-120', by: 'Maha Noor (Library Staff)', desc: 'Two ceiling fixtures near aisle 4 flicker continuously.', priority: 'Low', status: 'Completed', assignee: 'Khaled Nasser', date: '2026-10-20' },
+    { id: 'M5', title: 'Broken seminar desk chairs', cat: 'Furniture', room: 'KH-204', by: 'Student Council', desc: 'Three chairs have loose armrests and wobbly legs.', priority: 'Low', status: 'Pending', assignee: '', date: '2026-10-27' },
+    { id: 'M6', title: 'Central AC blower malfunction', cat: 'HVAC', room: 'BZ-501', by: 'Dean Assistant', desc: 'Room temperature reaches 28C despite thermostat set to 20C.', priority: 'High', status: 'Pending', assignee: '', date: '2026-10-30' },
+    { id: 'M7', title: 'Studio north window lock jammed', cat: 'Structural', room: 'FA-102', by: 'Prof. Sami Awad', desc: 'Window cannot be locked securely for art supply storage.', priority: 'Medium', status: 'In Progress', assignee: 'Omar Saleh', date: '2026-10-25' },
+    { id: 'M8', title: 'Emergency eye-wash pressure low', cat: 'Safety', room: 'IS-115', by: 'Safety Officer Kareem', desc: 'Routine inspection revealed reduced pressure in eye-wash station.', priority: 'Urgent', status: 'Pending', assignee: '', date: '2026-10-30' }
+  ],
+  activity: [
+    { id: 'a1', text: 'Maintenance M1 assigned to Rana Haddad', t: 'Oct 28, 09:14' },
+    { id: 'a2', text: 'Booking R3 approved for Circuits Lab (EC-205)', t: 'Oct 27, 15:40' },
+    { id: 'a3', text: 'New maintenance request: Projector lamp failure (KH-101)', t: 'Oct 29, 08:05' },
+    { id: 'a4', text: 'Medical Sciences Center registered with 4 floors', t: 'Oct 26, 11:30' },
+    { id: 'a5', text: 'Equipment E14 (5-Axis CNC Milling) serviced and ready', t: 'Oct 25, 14:22' },
+    { id: 'a6', text: 'Booking R6 approved for Medical Auditorium (MD-301)', t: 'Oct 24, 16:45' }
+  ]
+};
+
+/* ---------- Storage Helpers ---------- */
+function loadDB() {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (s && Array.isArray(s.buildings) && s.buildings.length > 0) return s;
+  } catch (e) {
+    console.error('Failed to load from storage, using seed data:', e);
+  }
+  return JSON.parse(JSON.stringify(SEED));
+}
+
+function saveDB(d) {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(d));
+  } catch (e) {
+    console.error('Failed to save to storage:', e);
+  }
+}
+
+/* ---------- Custom Hooks ---------- */
+function useSort(defaultKey = '', defaultDir = 'asc') {
+  const [sortKey, setSortKey] = useState(defaultKey);
+  const [sortDir, setSortDir] = useState(defaultDir);
+
+  const toggle = key => {
+    if (sortKey === key) {
+      setSortDir(d => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortKey(key);
+      setSortDir('asc');
+    }
+  };
+
+  const sortFn = useCallback(
+    (list, getVal) => {
+      if (!sortKey) return list;
+      return [...list].sort((a, b) => {
+        let va = getVal ? getVal(a, sortKey) : a[sortKey];
+        let vb = getVal ? getVal(b, sortKey) : b[sortKey];
+        if (va == null) va = '';
+        if (vb == null) vb = '';
+        if (typeof va === 'number' && typeof vb === 'number') {
+          return sortDir === 'asc' ? va - vb : vb - va;
+        }
+        return sortDir === 'asc'
+          ? String(va).localeCompare(String(vb), undefined, { numeric: true })
+          : String(vb).localeCompare(String(va), undefined, { numeric: true });
+      });
+    },
+    [sortKey, sortDir]
+  );
+
+  const thProps = key => ({
+    className: 'sortable' + (sortKey === key ? (sortDir === 'asc' ? ' asc' : ' desc') : ''),
+    onClick: () => toggle(key)
+  });
+
+  return { sortKey, sortDir, sortFn, thProps };
+}
+
+function usePagination(items, perPage = 10) {
+  const [page, setPage] = useState(0);
+  const totalPages = Math.max(1, Math.ceil(items.length / perPage));
+  const safeP = Math.min(page, totalPages - 1);
+  const paged = items.slice(safeP * perPage, (safeP + 1) * perPage);
+
+  useEffect(() => {
+    if (page >= totalPages) setPage(Math.max(0, totalPages - 1));
+  }, [items.length, totalPages, page]);
+
+  const Pager = () => {
+    if (totalPages <= 1) return null;
+    return (
+      <div className="pagination">
+        <button className="ghost" disabled={safeP === 0} onClick={() => setPage(safeP - 1)}>
+          ‹ Prev
+        </button>
+        <span>
+          Page {safeP + 1} of {totalPages} ({items.length} items)
+        </span>
+        <button className="ghost" disabled={safeP >= totalPages - 1} onClick={() => setPage(safeP + 1)}>
+          Next ›
+        </button>
+      </div>
+    );
+  };
+
+  return { paged, Pager, setPage };
+}
+
+/* ============================================================
+   Shared UI Components
+   ============================================================ */
+
+const Badge = ({ v }) => <span className="badge" style={{ '--t': TONE[v] || '#888' }}>{v}</span>;
+
+const Empty = ({ msg }) => <div className="empty">{msg || 'No records match your criteria.'}</div>;
+
+const Stat = ({ icon, c, l, v, s }) => (
+  <div className="card stat">
+    <div className="ic" style={{ background: c + '22', color: c }}>{icon}</div>
+    <div>
+      <div className="v">{v}</div>
+      <div className="l">{l}</div>
+      <div className="s">{s}</div>
+    </div>
+  </div>
+);
+
+const Toolbar = ({ q, setQ, onAdd, label, children }) => (
+  <div className="bar-row">
+    <input placeholder="Search records…" value={q} onChange={e => setQ(e.target.value)} />
+    {children}
+    {onAdd && <button onClick={onAdd}>+ {label}</button>}
+  </div>
+);
+
+const Bars = ({ data }) => {
+  const m = Math.max(...data.map(d => d.v), 1);
+  return (
+    <div className="bars">
+      {data.map(d => (
+        <div className="bc" key={d.l}>
+          <div className="bv">{d.v}</div>
+          <div className="bar" style={{ height: Math.max((d.v / m) * 140, 4) + 'px' }} />
+          <div className="bl">{d.l}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const Donut = ({ parts }) => {
+  const tot = parts.reduce((a, p) => a + p.v, 0);
+  const C = 2 * Math.PI * 40;
+  let acc = 0;
+  return (
+    <div className="donut">
+      <svg width="150" height="150" viewBox="0 0 120 120">
+        <g transform="rotate(-90 60 60)">
+          {parts.map(p => {
+            const L = tot ? (p.v / tot) * C : 0;
+            const el = (
+              <circle
+                key={p.l}
+                cx="60"
+                cy="60"
+                r="40"
+                fill="none"
+                stroke={p.c}
+                strokeWidth="16"
+                strokeDasharray={`${L} ${C - L}`}
+                strokeDashoffset={-acc}
+              />
+            );
+            acc += L;
+            return el;
+          })}
+        </g>
+        <text x="60" y="66" textAnchor="middle" fontSize="18" fontWeight="700" fill="currentColor">
+          {tot}
+        </text>
+      </svg>
+      <div className="lg">
+        {parts.map(p => (
+          <div key={p.l}>
+            <i style={{ background: p.c }} />
+            {p.l}: <b>{p.v}</b>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+function Modal({ title, onClose, children }) {
+  useEffect(() => {
+    const handler = e => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  return (
+    <div className="overlay" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="mh">
+          <h3>{title}</h3>
+          <button className="ghost" onClick={onClose}>✕</button>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ConfirmDialog({ message, onConfirm, onCancel }) {
+  return (
+    <div className="overlay" onClick={onCancel}>
+      <div className="confirm-box" onClick={e => e.stopPropagation()}>
+        <div className="confirm-icon">⚠️</div>
+        <h3>Confirm Action</h3>
+        <p>{message}</p>
+        <div className="acts">
+          <button className="ghost" onClick={onCancel}>Cancel</button>
+          <button className="danger-solid" onClick={onConfirm}>Confirm Delete</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FormModal({ title, fields, init, onSave, onClose }) {
+  const [f, setF] = useState(() => ({
+    ...Object.fromEntries(fields.filter(x => x.opts).map(x => [x.k, x.opts[0]])),
+    ...init
+  }));
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const errs = {};
+    fields.forEach(x => {
+      if (!x.opts && !x.area && (f[x.k] === undefined || f[x.k] === '')) {
+        errs[x.k] = 'This field is required';
+      }
+    });
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!validate()) return;
+    if (onSave(f) !== false) {
+      onClose();
+    }
+  };
+
+  return (
+    <Modal title={title} onClose={onClose}>
+      <form onSubmit={handleSubmit}>
+        {fields.map(x => (
+          <label key={x.k} className={errors[x.k] ? 'field-error' : ''}>
+            {x.l}
+            {x.opts ? (
+              <select value={f[x.k] ?? ''} onChange={e => setF({ ...f, [x.k]: e.target.value })}>
+                {x.opts.map(o => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+            ) : x.area ? (
+              <textarea
+                rows="3"
+                value={f[x.k] ?? ''}
+                onChange={e => setF({ ...f, [x.k]: e.target.value })}
+              />
+            ) : (
+              <input
+                type={x.t || 'text'}
+                value={f[x.k] ?? ''}
+                onChange={e => {
+                  setF({ ...f, [x.k]: x.t === 'number' ? +e.target.value : e.target.value });
+                  if (errors[x.k]) setErrors({ ...errors, [x.k]: undefined });
+                }}
+              />
+            )}
+            {errors[x.k] && <span className="err-msg">{errors[x.k]}</span>}
+          </label>
+        ))}
+        <div className="acts">
+          <button type="button" className="ghost" onClick={onClose}>
+            Cancel
+          </button>
+          <button type="submit">Save Record</button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+/* ============================================================
+   PAGE: Overview / Dashboard
+   ============================================================ */
+function Dash({ db, alerts, go, reserve }) {
+  const R = db.rooms;
+  const avail = R.filter(r => r.status === 'Available').length;
+  const occ = R.filter(r => r.status === 'Occupied').length;
+  const open = db.requests.filter(m => m.status !== 'Completed');
+  const urg = open.filter(m => m.priority === 'Urgent').length;
+  const cls = R.filter(r => r.type === 'Classroom').length;
+  const labs = R.filter(r => r.type === 'Laboratory').length;
+  const eqGood = db.equipment.filter(e => e.condition === 'Good').length;
+
+  return (
+    <div className="fade-in">
+      <div className="grid4">
+        <Stat
+          icon="🏛️"
+          c="#4f8a7b"
+          l="Total Buildings"
+          v={db.buildings.length}
+          s={`${db.buildings.filter(b => b.status === 'Operational').length} fully operational`}
+        />
+        <Stat
+          icon="🏫"
+          c="#6f8fb8"
+          l="Classrooms & Labs"
+          v={R.length}
+          s={`${cls} classrooms · ${labs} laboratories`}
+        />
+        <Stat
+          icon="✅"
+          c="#5a9a6e"
+          l="Available Now"
+          v={avail}
+          s={`${occ} occupied · ${R.length - avail - occ} maintenance`}
+        />
+        <Stat
+          icon="🔧"
+          c="#d69a3c"
+          l="Open Maintenance"
+          v={open.length}
+          s={`${urg} marked urgent priority`}
+        />
+      </div>
+
+      <div className="grid2">
+        <div className="card">
+          <h2>Rooms by Building</h2>
+          <Bars
+            data={db.buildings.map(b => ({
+              l: b.code,
+              v: R.filter(r => r.building === b.code).length
+            }))}
+          />
+        </div>
+        <div className="card">
+          <h2>Room Status Distribution</h2>
+          <Donut
+            parts={[
+              { l: 'Available', v: avail, c: '#5a9a6e' },
+              { l: 'Occupied', v: occ, c: '#6f8fb8' },
+              { l: 'Maintenance', v: R.filter(r => r.status === 'Maintenance').length, c: '#d69a3c' }
+            ]}
+          />
+        </div>
+      </div>
+
+      <div className="grid2">
+        <div className="card">
+          <h2>
+            Urgent Needs & Requests
+            <button className="ghost" onClick={() => go('mx')}>
+              All Requests →
+            </button>
+          </h2>
+          <div className="list">
+            {[...open].sort(byPri).slice(0, 5).map(m => (
+              <div className="it" key={m.id}>
+                <span className="dot" style={{ background: TONE[m.priority] }} />
+                <div style={{ flex: 1 }}>
+                  <b>{m.title}</b>
+                  <div className="muted">
+                    {m.room} · {m.cat} · {m.date}
+                  </div>
+                </div>
+                <Badge v={m.priority} />
+              </div>
+            ))}
+            {!open.length && <Empty msg="No open requests. Everything is operating smoothly!" />}
+          </div>
+        </div>
+
+        <div className="card">
+          <h2>
+            Recent System Activity
+            <button className="ghost" onClick={() => go('not')}>
+              View Log →
+            </button>
+          </h2>
+          <div className="list">
+            {db.activity.slice(0, 6).map(a => (
+              <div className="it" key={a.id}>
+                <span className="dot" style={{ background: '#4f8a7b' }} />
+                <div style={{ flex: 1 }}>
+                  {a.text}
+                  <div className="muted">{a.t}</div>
+                </div>
+              </div>
+            ))}
+            {!db.activity.length && <Empty msg="No activity recorded yet." />}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid2">
+        <div className="card">
+          <h2>Equipment Condition</h2>
+          <Donut
+            parts={[
+              { l: 'Good', v: eqGood, c: '#5a9a6e' },
+              { l: 'Fair', v: db.equipment.filter(e => e.condition === 'Fair').length, c: '#c9a23c' },
+              { l: 'Damaged', v: db.equipment.filter(e => e.condition === 'Damaged').length, c: '#c4625a' }
+            ]}
+          />
+        </div>
+        <div className="card">
+          <h2>Reservations Breakdown</h2>
+          <Donut
+            parts={[
+              { l: 'Approved', v: db.reservations.filter(r => r.status === 'Approved').length, c: '#5a9a6e' },
+              { l: 'Pending', v: db.reservations.filter(r => r.status === 'Pending').length, c: '#c9a23c' },
+              { l: 'Rejected', v: db.reservations.filter(r => r.status === 'Rejected').length, c: '#c4625a' }
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Buildings
+   ============================================================ */
+const BF = [
+  { k: 'code', l: 'Building Code (e.g. KH)' },
+  { k: 'name', l: 'Building Full Name' },
+  { k: 'floors', l: 'Number of Floors (incl. Ground)', t: 'number' },
+  { k: 'year', l: 'Year Constructed', t: 'number' },
+  { k: 'status', l: 'Operational Status', opts: BLDG_STATS }
+];
+
+function Buildings({ db, mutate, notify, go, reserve }) {
+  const [q, setQ] = useState('');
+  const [st, setSt] = useState('All');
+  const [sel, setSel] = useState(null);
+  const [m, setM] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const { sortFn, thProps } = useSort('code');
+
+  const list = db.buildings.filter(
+    b =>
+      (st === 'All' || b.status === st) &&
+      (b.name + b.code + b.status).toLowerCase().includes(q.toLowerCase())
+  );
+
+  const sorted = sortFn(list, (item, key) => {
+    if (key === 'rooms') return db.rooms.filter(r => r.building === item.code).length;
+    return item[key];
+  });
+
+  const save = v => {
+    const isNew = !db.buildings.some(b => b.code.toUpperCase() === v.code.toUpperCase());
+    const upperCode = v.code.toUpperCase().trim();
+    const cleanItem = { ...v, code: upperCode };
+    mutate(
+      d => ({
+        ...d,
+        buildings: isNew
+          ? [...d.buildings, cleanItem]
+          : d.buildings.map(b => (b.code === cleanItem.code ? { ...b, ...cleanItem } : b))
+      }),
+      `${isNew ? 'Building added' : 'Building updated'}: ${cleanItem.name} (${cleanItem.code})`
+    );
+    notify('Building details saved');
+  };
+
+  const del = b => {
+    mutate(
+      d => ({
+        ...d,
+        buildings: d.buildings.filter(x => x.code !== b.code),
+        rooms: d.rooms.filter(r => r.building !== b.code)
+      }),
+      `Building deleted: ${b.name} (${b.code}) with associated rooms`
+    );
+    if (sel === b.code) setSel(null);
+    notify('Building deleted');
+    setConfirm(null);
+  };
+
+  const cur = db.buildings.find(b => b.code === sel);
+
+  return (
+    <div className="fade-in">
+      <Toolbar q={q} setQ={setQ} onAdd={() => setM('new')} label="Add Building">
+        <select value={st} onChange={e => setSt(e.target.value)}>
+          <option value="All">All Statuses</option>
+          {BLDG_STATS.map(s => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+      </Toolbar>
+
+      <div className="card wrap">
+        <table>
+          <thead>
+            <tr>
+              <th {...thProps('code')}>Code</th>
+              <th {...thProps('name')}>Building Name</th>
+              <th {...thProps('floors')}>Floors</th>
+              <th {...thProps('year')}>Built Year</th>
+              <th {...thProps('rooms')}>Total Rooms</th>
+              <th {...thProps('status')}>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map(b => (
+              <tr key={b.code} className={sel === b.code ? 'sel' : ''}>
+                <td><b>{b.code}</b></td>
+                <td>{b.name}</td>
+                <td>{b.floors}</td>
+                <td>{b.year}</td>
+                <td>{db.rooms.filter(r => r.building === b.code).length}</td>
+                <td><Badge v={b.status} /></td>
+                <td className="acts-c">
+                  <button className="ghost" onClick={() => setSel(sel === b.code ? null : b.code)}>
+                    {sel === b.code ? 'Hide Floors' : 'View Floors'}
+                  </button>
+                  <button className="ghost" onClick={() => setM(b)}>Edit</button>
+                  <button className="ghost danger" onClick={() => setConfirm(b)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {!sorted.length && <Empty />}
+      </div>
+
+      {cur && (
+        <div className="card">
+          <h2>
+            <span>Floor & Room Map: {cur.name} ({cur.code})</span>
+            <span className="muted" style={{ fontSize: 13, fontWeight: 'normal' }}>
+              Click any room to book or inspect
+            </span>
+          </h2>
+          <div className="floors">
+            {Array.from({ length: cur.floors }, (_, i) => i).map(f => {
+              const floorRooms = db.rooms.filter(r => r.building === cur.code && r.floor === f);
+              return (
+                <div key={f} className="floor">
+                  <b>{f === 0 ? 'Ground' : `Floor ${f}`}</b>
+                  {floorRooms.map(r => (
+                    <div
+                      key={r.code}
+                      className="chip"
+                      style={{ cursor: 'pointer' }}
+                      title="Click to reserve"
+                      onClick={() => reserve(r.code)}
+                    >
+                      <span><b>{r.code}</b> — {r.name} ({r.capacity} cap)</span>
+                      <Badge v={r.status} />
+                    </div>
+                  ))}
+                  {!floorRooms.length && <span className="muted">No rooms registered on this floor</span>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {m && (
+        <FormModal
+          title={m === 'new' ? 'Add New University Building' : `Edit Building: ${m.name}`}
+          fields={m === 'new' ? BF : BF.filter(x => x.k !== 'code')}
+          init={m === 'new' ? { floors: 4, year: 2020, status: 'Operational' } : m}
+          onSave={save}
+          onClose={() => setM(null)}
+        />
+      )}
+
+      {confirm && (
+        <ConfirmDialog
+          message={`Are you sure you want to delete "${confirm.name}" (${confirm.code})? All associated classrooms, laboratories, and equipment references will also be permanently deleted.`}
+          onConfirm={() => del(confirm)}
+          onCancel={() => setConfirm(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Rooms (Classrooms & Laboratories)
+   ============================================================ */
+function Rooms({ db, mutate, notify, type, reserve }) {
+  const [q, setQ] = useState('');
+  const [st, setSt] = useState('All');
+  const [bldFilter, setBldFilter] = useState('All');
+  const [m, setM] = useState(null);
+  const [sch, setSch] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const { sortFn, thProps } = useSort('code');
+  const L = type === 'Laboratory';
+
+  const list = db.rooms.filter(
+    r =>
+      r.type === type &&
+      (st === 'All' || r.status === st) &&
+      (bldFilter === 'All' || r.building === bldFilter) &&
+      (r.code + r.name + r.building).toLowerCase().includes(q.toLowerCase())
+  );
+
+  const bname = c => db.buildings.find(b => b.code === c)?.name || c;
+
+  const sorted = sortFn(list, (item, key) => {
+    if (key === 'buildingName') return bname(item.building);
+    if (key === 'equipment') {
+      const eq = db.equipment.filter(e => e.room === item.code);
+      return eq.filter(e => e.available).length;
+    }
+    return item[key];
+  });
+
+  const { paged, Pager } = usePagination(sorted, 10);
+
+  const RF = [
+    { k: 'code', l: 'Room Code (e.g. IS-110)' },
+    { k: 'name', l: 'Room Name' },
+    { k: 'building', l: 'Building', opts: db.buildings.map(b => b.code) },
+    { k: 'floor', l: 'Floor Number (0 = Ground)', t: 'number' },
+    { k: 'capacity', l: 'Seating / Student Capacity', t: 'number' },
+    { k: 'status', l: 'Current Status', opts: ROOM_STATS }
+  ];
+
+  const save = v => {
+    const upperCode = v.code.toUpperCase().trim();
+    const isNew = !db.rooms.some(r => r.code === upperCode);
+    const item = { ...v, code: upperCode, type };
+    mutate(
+      d => ({
+        ...d,
+        rooms: isNew ? [...d.rooms, item] : d.rooms.map(r => (r.code === upperCode ? { ...r, ...item } : r))
+      }),
+      `${isNew ? 'Room added' : 'Room updated'}: ${item.code} (${item.name})`
+    );
+    notify('Room saved successfully');
+  };
+
+  const del = r => {
+    mutate(
+      d => ({
+        ...d,
+        rooms: d.rooms.filter(x => x.code !== r.code),
+        equipment: d.equipment.filter(e => e.room !== r.code),
+        reservations: d.reservations.filter(res => res.room !== r.code)
+      }),
+      `Room deleted: ${r.code}`
+    );
+    notify('Room deleted');
+    setConfirm(null);
+  };
+
+  const schedule = sch
+    ? db.reservations
+        .filter(r => r.room === sch)
+        .sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start))
+    : [];
+
+  return (
+    <div className="fade-in">
+      <Toolbar q={q} setQ={setQ} onAdd={() => setM('new')} label={L ? 'Add Laboratory' : 'Add Classroom'}>
+        <select value={bldFilter} onChange={e => setBldFilter(e.target.value)}>
+          <option value="All">All Buildings</option>
+          {db.buildings.map(b => (
+            <option key={b.code} value={b.code}>
+              {b.name} ({b.code})
+            </option>
+          ))}
+        </select>
+        <select value={st} onChange={e => setSt(e.target.value)}>
+          <option value="All">All Statuses</option>
+          {ROOM_STATS.map(s => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+      </Toolbar>
+
+      <div className="card wrap">
+        <table>
+          <thead>
+            <tr>
+              <th {...thProps('code')}>Code</th>
+              <th {...thProps('name')}>Name</th>
+              <th {...thProps('buildingName')}>Building</th>
+              {L ? <th {...thProps('equipment')}>Equipment Ready</th> : <th {...thProps('floor')}>Floor</th>}
+              <th {...thProps('capacity')}>Capacity</th>
+              <th {...thProps('status')}>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {paged.map(r => {
+              const eq = db.equipment.filter(e => e.room === r.code);
+              return (
+                <tr key={r.code} className={sch === r.code ? 'sel' : ''}>
+                  <td><b>{r.code}</b></td>
+                  <td>{r.name}</td>
+                  <td>{bname(r.building)}</td>
+                  {L ? (
+                    <td>
+                      <span style={{ fontWeight: 600 }}>
+                        {eq.filter(e => e.available).length} / {eq.length}
+                      </span>{' '}
+                      <span className="muted">available</span>
+                    </td>
+                  ) : (
+                    <td>{r.floor === 0 ? 'Ground' : `Floor ${r.floor}`}</td>
+                  )}
+                  <td>{r.capacity} seats</td>
+                  <td><Badge v={r.status} /></td>
+                  <td className="acts-c">
+                    <button className="ghost success-ghost" onClick={() => reserve(r.code)}>
+                      Reserve
+                    </button>
+                    <button className="ghost" onClick={() => setSch(sch === r.code ? null : r.code)}>
+                      {sch === r.code ? 'Hide Schedule' : 'Schedule'}
+                    </button>
+                    <button className="ghost" onClick={() => setM(r)}>Edit</button>
+                    <button className="ghost danger" onClick={() => setConfirm(r)}>Delete</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {!sorted.length && <Empty />}
+        <Pager />
+      </div>
+
+      {sch && (
+        <div className="card">
+          <h2>
+            <span>Schedule & Bookings for {sch}</span>
+            <button className="ghost" onClick={() => reserve(sch)}>
+              + Book This Room
+            </button>
+          </h2>
+          <div className="list">
+            {schedule.map(r => (
+              <div className="it" key={r.id}>
+                <div style={{ flex: 1 }}>
+                  <b>{r.date}</b> ({r.start} – {r.end})
+                  <div className="muted">
+                    {r.purpose} — Requested by {r.who}
+                  </div>
+                </div>
+                <Badge v={r.status} />
+              </div>
+            ))}
+            {!schedule.length && <Empty msg="No reservations scheduled for this room." />}
+          </div>
+        </div>
+      )}
+
+      {m && (
+        <FormModal
+          title={m === 'new' ? (L ? 'Add New Laboratory' : 'Add New Classroom') : `Edit Room: ${m.code}`}
+          fields={m === 'new' ? RF : RF.filter(x => x.k !== 'code')}
+          init={
+            m === 'new'
+              ? { floor: 1, capacity: 30, status: 'Available', building: db.buildings[0]?.code }
+              : m
+          }
+          onSave={save}
+          onClose={() => setM(null)}
+        />
+      )}
+
+      {confirm && (
+        <ConfirmDialog
+          message={`Delete room ${confirm.code} (${confirm.name})? All equipment and reservation records assigned to this room will also be removed.`}
+          onConfirm={() => del(confirm)}
+          onCancel={() => setConfirm(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Equipment
+   ============================================================ */
+function Equip({ db, mutate, notify }) {
+  const [q, setQ] = useState('');
+  const [cond, setCond] = useState('All');
+  const [availFilter, setAvailFilter] = useState('All');
+  const [m, setM] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const { sortFn, thProps } = useSort('id');
+
+  const allRooms = db.rooms.map(r => r.code);
+
+  const EF = [
+    { k: 'name', l: 'Equipment Name & Model' },
+    { k: 'room', l: 'Assigned Location (Room)', opts: allRooms },
+    { k: 'condition', l: 'Physical Condition', opts: CONDITIONS },
+    { k: 'service', l: 'Last Inspection / Service Date', t: 'date' }
+  ];
+
+  const list = db.equipment.filter(e => {
+    const matchQ = (e.name + e.room + e.id).toLowerCase().includes(q.toLowerCase());
+    const matchCond = cond === 'All' || e.condition === cond;
+    const matchAvail =
+      availFilter === 'All' ||
+      (availFilter === 'Available' ? e.available : !e.available);
+    return matchQ && matchCond && matchAvail;
+  });
+
+  const sorted = sortFn(list);
+  const { paged, Pager } = usePagination(sorted, 10);
+
+  const save = v => {
+    const isNew = !db.equipment.some(e => e.id === v.id);
+    const item = { ...v };
+    if (isNew) {
+      item.id = 'E' + (db.equipment.length + 1);
+      item.available = item.condition !== 'Damaged';
+    }
+    mutate(
+      d => ({
+        ...d,
+        equipment: isNew ? [...d.equipment, item] : d.equipment.map(e => (e.id === item.id ? { ...e, ...item } : e))
+      }),
+      `${isNew ? 'Equipment registered' : 'Equipment updated'}: ${item.name} (${item.id})`
+    );
+    notify('Equipment saved');
+  };
+
+  const del = e => {
+    mutate(
+      d => ({ ...d, equipment: d.equipment.filter(x => x.id !== e.id) }),
+      `Equipment deleted: ${e.name} (${e.id})`
+    );
+    notify('Equipment removed');
+    setConfirm(null);
+  };
+
+  const toggleAvail = e => {
+    const nextState = !e.available;
+    mutate(
+      d => ({
+        ...d,
+        equipment: d.equipment.map(x => (x.id === e.id ? { ...x, available: nextState } : x))
+      }),
+      `${e.name} marked ${nextState ? 'available' : 'unavailable'}`
+    );
+    notify(nextState ? 'Marked as Available' : 'Marked as Unavailable');
+  };
+
+  const logService = e => {
+    const t = today();
+    mutate(
+      d => ({
+        ...d,
+        equipment: d.equipment.map(x => (x.id === e.id ? { ...x, service: t, condition: 'Good' } : x))
+      }),
+      `Service recorded for ${e.name} on ${t}`
+    );
+    notify('Service logged for today (condition reset to Good)');
+  };
+
+  return (
+    <div className="fade-in">
+      <Toolbar q={q} setQ={setQ} onAdd={() => setM('new')} label="Add Equipment">
+        <select value={cond} onChange={e => setCond(e.target.value)}>
+          <option value="All">All Conditions</option>
+          {CONDITIONS.map(s => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        <select value={availFilter} onChange={e => setAvailFilter(e.target.value)}>
+          <option value="All">All Availability</option>
+          <option value="Available">Available</option>
+          <option value="Unavailable">Unavailable</option>
+        </select>
+      </Toolbar>
+
+      <div className="card wrap">
+        <table>
+          <thead>
+            <tr>
+              <th {...thProps('id')}>ID</th>
+              <th {...thProps('name')}>Equipment Name</th>
+              <th {...thProps('room')}>Location</th>
+              <th {...thProps('condition')}>Condition</th>
+              <th>Availability</th>
+              <th {...thProps('service')}>Last Service</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {paged.map(e => {
+              const r = db.rooms.find(x => x.code === e.room);
+              return (
+                <tr key={e.id} className={e.condition === 'Damaged' ? 'dmg' : ''}>
+                  <td><b>{e.id}</b></td>
+                  <td>
+                    <b>{e.name}</b>
+                  </td>
+                  <td>
+                    <b>{e.room}</b>
+                    {r && <div className="muted">{r.name}</div>}
+                  </td>
+                  <td><Badge v={e.condition} /></td>
+                  <td>
+                    <button
+                      className={`ghost inl ${e.available ? 'success-ghost' : 'danger'}`}
+                      onClick={() => toggleAvail(e)}
+                      title="Click to toggle availability"
+                    >
+                      {e.available ? '✓ Available' : '✗ Unavailable'}
+                    </button>
+                  </td>
+                  <td>{e.service}</td>
+                  <td className="acts-c">
+                    <button className="ghost" onClick={() => logService(e)}>
+                      Log Service
+                    </button>
+                    <button className="ghost" onClick={() => setM(e)}>
+                      Edit
+                    </button>
+                    <button className="ghost danger" onClick={() => setConfirm(e)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {!sorted.length && <Empty />}
+        <Pager />
+      </div>
+
+      {m && (
+        <FormModal
+          title={m === 'new' ? 'Register New University Equipment' : `Edit Equipment: ${m.name}`}
+          fields={EF}
+          init={
+            m === 'new'
+              ? { room: allRooms[0], condition: 'Good', service: today() }
+              : m
+          }
+          onSave={save}
+          onClose={() => setM(null)}
+        />
+      )}
+
+      {confirm && (
+        <ConfirmDialog
+          message={`Delete equipment record "${confirm.name}" (${confirm.id})?`}
+          onConfirm={() => del(confirm)}
+          onCancel={() => setConfirm(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Maintenance
+   ============================================================ */
+function Maint({ db, mutate, notify }) {
+  const [q, setQ] = useState('');
+  const [fs, setFs] = useState('All');
+  const [fp, setFp] = useState('All');
+  const [fc, setFc] = useState('All');
+  const [m, setM] = useState(null);
+  const [detail, setDetail] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const { sortFn, thProps } = useSort('date', 'desc');
+
+  const MF = [
+    { k: 'title', l: 'Issue Title' },
+    { k: 'cat', l: 'Facility Category', opts: CATS },
+    { k: 'room', l: 'Location (Room)', opts: db.rooms.map(r => r.code) },
+    { k: 'by', l: 'Reported By (Name / Role)' },
+    { k: 'priority', l: 'Priority Level', opts: PRI },
+    { k: 'status', l: 'Request Status', opts: STAT },
+    { k: 'assignee', l: 'Assign Staff', opts: ['', ...STAFF] },
+    { k: 'desc', l: 'Detailed Description of Problem', area: true }
+  ];
+
+  const list = db.requests.filter(x => {
+    const matchS = fs === 'All' || x.status === fs;
+    const matchP = fp === 'All' || x.priority === fp;
+    const matchC = fc === 'All' || x.cat === fc;
+    const matchQ = (x.title + x.room + x.cat + x.by + x.id).toLowerCase().includes(q.toLowerCase());
+    return matchS && matchP && matchC && matchQ;
+  });
+
+  const sorted = sortFn(list, (item, key) => {
+    if (key === 'priority') return PRI.indexOf(item.priority);
+    return item[key];
+  });
+  const { paged, Pager } = usePagination(sorted, 10);
+
+  const save = v => {
+    const isNew = !db.requests.some(r => r.id === v.id);
+    const item = { ...v };
+    if (isNew) {
+      item.id = 'M' + (db.requests.length + 1);
+      item.date = today();
+      if (!item.status) item.status = 'Pending';
+      if (!item.assignee) item.assignee = '';
+    }
+    mutate(
+      d => ({
+        ...d,
+        requests: isNew
+          ? [item, ...d.requests]
+          : d.requests.map(r => (r.id === item.id ? { ...r, ...item } : r))
+      }),
+      `${isNew ? 'Maintenance requested' : 'Maintenance updated'}: ${item.title} (${item.room})`
+    );
+    notify('Maintenance record saved');
+  };
+
+  const del = r => {
+    mutate(
+      d => ({ ...d, requests: d.requests.filter(x => x.id !== r.id) }),
+      `Maintenance request removed: ${r.title}`
+    );
+    notify('Request deleted');
+    setConfirm(null);
+  };
+
+  const updateField = (id, field, value) => {
+    const req = db.requests.find(x => x.id === id);
+    if (!req) return;
+    const updates = { [field]: value };
+    if (field === 'assignee' && value && req.status === 'Pending') {
+      updates.status = 'In Progress';
+    }
+    mutate(
+      d => ({
+        ...d,
+        requests: d.requests.map(x => (x.id === id ? { ...x, ...updates } : x))
+      }),
+      `${req.title}: ${field} changed to ${value || 'none'}`
+    );
+    notify(`Updated ${field}`);
+  };
+
+  return (
+    <div className="fade-in">
+      <Toolbar q={q} setQ={setQ} onAdd={() => setM('new')} label="New Maintenance Request">
+        <select value={fp} onChange={e => setFp(e.target.value)}>
+          <option value="All">All Priorities</option>
+          {PRI.map(p => (
+            <option key={p} value={p}>{p}</option>
+          ))}
+        </select>
+        <select value={fc} onChange={e => setFc(e.target.value)}>
+          <option value="All">All Categories</option>
+          {CATS.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </Toolbar>
+
+      <div className="tabs">
+        {['All', ...STAT].map(s => {
+          const count = s === 'All' ? db.requests.length : db.requests.filter(x => x.status === s).length;
+          return (
+            <button key={s} className={fs === s ? 'on' : ''} onClick={() => setFs(s)}>
+              {s} ({count})
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="card wrap">
+        <table>
+          <thead>
+            <tr>
+              <th {...thProps('id')}>ID</th>
+              <th {...thProps('title')}>Issue Title</th>
+              <th {...thProps('room')}>Location</th>
+              <th {...thProps('cat')}>Category</th>
+              <th {...thProps('priority')}>Priority</th>
+              <th {...thProps('assignee')}>Assigned Staff</th>
+              <th {...thProps('status')}>Status</th>
+              <th {...thProps('date')}>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {paged.map(x => (
+              <tr key={x.id} className={x.priority === 'Urgent' && x.status !== 'Completed' ? 'dmg' : ''}>
+                <td><b>{x.id}</b></td>
+                <td>
+                  <span
+                    style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--acc)' }}
+                    onClick={() => setDetail(x)}
+                    title="Click to view full description"
+                  >
+                    {x.title}
+                  </span>
+                  <div className="muted">By {x.by}</div>
+                </td>
+                <td>{x.room}</td>
+                <td>{x.cat}</td>
+                <td>
+                  <select
+                    className="inl"
+                    value={x.priority}
+                    onChange={e => updateField(x.id, 'priority', e.target.value)}
+                  >
+                    {PRI.map(p => (
+                      <option key={p} value={p}>{p}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <select
+                    className="inl"
+                    value={x.assignee || ''}
+                    onChange={e => updateField(x.id, 'assignee', e.target.value)}
+                  >
+                    <option value="">Unassigned</option>
+                    {STAFF.map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <select
+                    className="inl"
+                    value={x.status}
+                    onChange={e => updateField(x.id, 'status', e.target.value)}
+                  >
+                    {STAT.map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </td>
+                <td className="muted">{x.date}</td>
+                <td className="acts-c">
+                  <button className="ghost" onClick={() => setDetail(x)}>
+                    View
+                  </button>
+                  <button className="ghost" onClick={() => setM(x)}>
+                    Edit
+                  </button>
+                  <button className="ghost danger" onClick={() => setConfirm(x)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {!sorted.length && <Empty />}
+        <Pager />
+      </div>
+
+      {detail && (
+        <Modal title={`Maintenance Issue: ${detail.id} — ${detail.title}`} onClose={() => setDetail(null)}>
+          <div className="detail-grid">
+            <div>
+              <span className="muted">Location:</span> <b>{detail.room}</b>
+            </div>
+            <div>
+              <span className="muted">Category:</span> <b>{detail.cat}</b>
+            </div>
+            <div>
+              <span className="muted">Priority:</span> <Badge v={detail.priority} />
+            </div>
+            <div>
+              <span className="muted">Status:</span> <Badge v={detail.status} />
+            </div>
+            <div>
+              <span className="muted">Reported By:</span> <b>{detail.by}</b>
+            </div>
+            <div>
+              <span className="muted">Assigned Technician:</span> <b>{detail.assignee || 'Unassigned'}</b>
+            </div>
+            <div>
+              <span className="muted">Date Logged:</span> <b>{detail.date}</b>
+            </div>
+          </div>
+          <div style={{ marginTop: 14 }}>
+            <span className="muted" style={{ display: 'block', marginBottom: 4 }}>
+              Problem Description:
+            </span>
+            <div style={{ background: '#f7faf8', padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap' }}>
+              {detail.desc || 'No additional description provided.'}
+            </div>
+          </div>
+          <div className="acts" style={{ marginTop: 16 }}>
+            <button className="ghost" onClick={() => setDetail(null)}>
+              Close
+            </button>
+            <button
+              onClick={() => {
+                setDetail(null);
+                setM(detail);
+              }}
+            >
+              Edit Request
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {m && (
+        <FormModal
+          title={m === 'new' ? 'Submit New Maintenance Work Order' : `Edit Work Order ${m.id}`}
+          fields={m === 'new' ? MF.filter(x => x.k !== 'status' && x.k !== 'assignee') : MF}
+          init={
+            m === 'new'
+              ? { cat: 'Electrical', room: db.rooms[0]?.code, priority: 'Medium', desc: '' }
+              : m
+          }
+          onSave={save}
+          onClose={() => setM(null)}
+        />
+      )}
+
+      {confirm && (
+        <ConfirmDialog
+          message={`Are you sure you want to permanently delete maintenance request "${confirm.title}" (${confirm.id})?`}
+          onConfirm={() => del(confirm)}
+          onCancel={() => setConfirm(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Reservations
+   ============================================================ */
+function Res({ db, mutate, notify, pref, clear }) {
+  const [q, setQ] = useState('');
+  const [fs, setFs] = useState('All');
+  const [fd, setFd] = useState('');
+  const [m, setM] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const { sortFn, thProps } = useSort('date', 'desc');
+
+  useEffect(() => {
+    if (pref) {
+      setM(true);
+      if (clear) clear();
+    }
+  }, [pref]);
+
+  const ResF = [
+    { k: 'room', l: 'Target Room', opts: db.rooms.map(r => r.code) },
+    { k: 'who', l: 'Reserved By (Faculty / Student / Dept)' },
+    { k: 'purpose', l: 'Event Purpose / Description' },
+    { k: 'date', l: 'Reservation Date', t: 'date' },
+    { k: 'start', l: 'Start Time (HH:MM)', t: 'time' },
+    { k: 'end', l: 'End Time (HH:MM)', t: 'time' },
+    { k: 'status', l: 'Status', opts: RES_STATS }
+  ];
+
+  const list = db.reservations.filter(r => {
+    const matchS = fs === 'All' || r.status === fs;
+    const matchD = !fd || r.date === fd;
+    const matchQ = (r.room + r.who + r.purpose + r.id).toLowerCase().includes(q.toLowerCase());
+    return matchS && matchD && matchQ;
+  });
+
+  const sorted = sortFn(list);
+  const { paged, Pager } = usePagination(sorted, 10);
+
+  const checkConflict = (room, date, start, end, excludeId = null) => {
+    const newStart = toMinutes(start);
+    const newEnd = toMinutes(end);
+    return db.reservations.find(r => {
+      if (r.id === excludeId || r.room !== room || r.date !== date || r.status === 'Rejected') {
+        return false;
+      }
+      const existingStart = toMinutes(r.start);
+      const existingEnd = toMinutes(r.end);
+      return newStart < existingEnd && newEnd > existingStart;
+    });
+  };
+
+  const save = v => {
+    if (toMinutes(v.start) >= toMinutes(v.end)) {
+      notify('Error: End time must be strictly after start time');
+      return false;
+    }
+    const isNew = !db.reservations.some(r => r.id === v.id);
+    const item = { ...v };
+    if (isNew) {
+      item.id = 'R' + (db.reservations.length + 1);
+      if (!item.status) item.status = 'Pending';
+    }
+
+    if (item.status === 'Approved') {
+      const conflict = checkConflict(item.room, item.date, item.start, item.end, item.id);
+      if (conflict) {
+        notify(`Scheduling Conflict! Room already booked by ${conflict.who} (${conflict.start}–${conflict.end})`);
+        return false;
+      }
+    }
+
+    mutate(
+      d => ({
+        ...d,
+        reservations: isNew
+          ? [item, ...d.reservations]
+          : d.reservations.map(r => (r.id === item.id ? { ...r, ...item } : r))
+      }),
+      `${isNew ? 'Booking requested' : 'Booking updated'}: ${item.room} for ${item.who}`
+    );
+    notify('Reservation saved successfully');
+  };
+
+  const setStatus = (r, status) => {
+    if (status === 'Approved') {
+      const conflict = checkConflict(r.room, r.date, r.start, r.end, r.id);
+      if (conflict) {
+        notify(`Cannot Approve: Conflict with ${conflict.who} (${conflict.start}–${conflict.end})`);
+        return;
+      }
+    }
+    mutate(
+      d => ({
+        ...d,
+        reservations: d.reservations.map(x => (x.id === r.id ? { ...x, status } : x))
+      }),
+      `Reservation ${r.id} for ${r.room} set to ${status}`
+    );
+    notify(`Reservation marked as ${status}`);
+  };
+
+  const del = r => {
+    mutate(
+      d => ({ ...d, reservations: d.reservations.filter(x => x.id !== r.id) }),
+      `Reservation deleted: ${r.id} (${r.room})`
+    );
+    notify('Reservation deleted');
+    setConfirm(null);
+  };
+
+  return (
+    <div className="fade-in">
+      <Toolbar q={q} setQ={setQ} onAdd={() => setM(true)} label="New Booking">
+        <input
+          type="date"
+          value={fd}
+          onChange={e => setFd(e.target.value)}
+          title="Filter by specific date"
+        />
+        {fd && (
+          <button className="ghost" onClick={() => setFd('')}>
+            Clear Date Filter
+          </button>
+        )}
+      </Toolbar>
+
+      <div className="tabs">
+        {['All', ...RES_STATS].map(s => {
+          const count = s === 'All' ? db.reservations.length : db.reservations.filter(r => r.status === s).length;
+          return (
+            <button key={s} className={fs === s ? 'on' : ''} onClick={() => setFs(s)}>
+              {s} ({count})
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="card wrap">
+        <table>
+          <thead>
+            <tr>
+              <th {...thProps('id')}>ID</th>
+              <th {...thProps('room')}>Room</th>
+              <th {...thProps('who')}>Requested By</th>
+              <th {...thProps('purpose')}>Purpose</th>
+              <th {...thProps('date')}>Date</th>
+              <th>Time Window</th>
+              <th {...thProps('status')}>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {paged.map(r => {
+              const roomObj = db.rooms.find(x => x.code === r.room);
+              return (
+                <tr key={r.id}>
+                  <td><b>{r.id}</b></td>
+                  <td>
+                    <b>{r.room}</b>
+                    {roomObj && <div className="muted">{roomObj.name}</div>}
+                  </td>
+                  <td>{r.who}</td>
+                  <td>{r.purpose}</td>
+                  <td>{r.date}</td>
+                  <td>{r.start} – {r.end}</td>
+                  <td><Badge v={r.status} /></td>
+                  <td className="acts-c">
+                    {r.status !== 'Approved' && (
+                      <button
+                        className="ghost success-ghost"
+                        onClick={() => setStatus(r, 'Approved')}
+                        title="Approve booking"
+                      >
+                        Approve
+                      </button>
+                    )}
+                    {r.status !== 'Rejected' && (
+                      <button
+                        className="ghost danger"
+                        onClick={() => setStatus(r, 'Rejected')}
+                        title="Reject booking"
+                      >
+                        Reject
+                      </button>
+                    )}
+                    <button className="ghost" onClick={() => setEditItem(r)}>
+                      Edit
+                    </button>
+                    <button className="ghost danger" onClick={() => setConfirm(r)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {!sorted.length && <Empty />}
+        <Pager />
+      </div>
+
+      {(m || editItem) && (
+        <FormModal
+          title={m ? 'Create Room Reservation' : `Edit Reservation: ${editItem.id}`}
+          fields={m ? ResF.filter(x => x.k !== 'status') : ResF}
+          init={
+            m
+              ? {
+                  room: pref || db.rooms[0]?.code,
+                  date: today(),
+                  start: '09:00',
+                  end: '11:00',
+                  purpose: '',
+                  who: ''
+                }
+              : editItem
+          }
+          onSave={save}
+          onClose={() => {
+            setM(false);
+            setEditItem(null);
+          }}
+        />
+      )}
+
+      {confirm && (
+        <ConfirmDialog
+          message={`Are you sure you want to cancel and delete reservation ${confirm.id} for ${confirm.room}?`}
+          onConfirm={() => del(confirm)}
+          onCancel={() => setConfirm(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Reports & Analytics
+   ============================================================ */
+function Reports({ db, notify }) {
+  const [downloadMsg, setDownloadMsg] = useState('');
+
+  const calcBookedHours = b => {
+    const rs = db.rooms.filter(r => r.building === b.code);
+    return db.reservations
+      .filter(r => r.status === 'Approved' && rs.some(x => x.code === r.room))
+      .reduce((s, r) => s + (toMinutes(r.end) - toMinutes(r.start)) / 60, 0);
+  };
+
+  const rows = db.buildings.map(b => {
+    const rs = db.rooms.filter(r => r.building === b.code);
+    const labRooms = rs.filter(r => r.type === 'Laboratory');
+    const eq = db.equipment.filter(e => rs.some(r => r.code === e.room));
+    const ready = eq.length
+      ? Math.round(
+          (eq.filter(e => e.available && e.condition !== 'Damaged').length / eq.length) * 100
+        )
+      : null;
+    return {
+      b,
+      rooms: rs.length,
+      labs: labRooms.length,
+      ready,
+      open: db.requests.filter(m => m.status !== 'Completed' && rs.some(r => r.code === m.room)).length,
+      hrs: Math.round(calcBookedHours(b))
+    };
+  });
+
+  const exportCSV = () => {
+    const headers = ['Building Name', 'Code', 'Total Rooms', 'Labs', 'Equipment Ready %', 'Open Requests', 'Booked Hours'];
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r =>
+        [
+          `"${r.b.name}"`,
+          r.b.code,
+          r.rooms,
+          r.labs,
+          r.ready !== null ? r.ready + '%' : 'N/A',
+          r.open,
+          r.hrs
+        ].join(',')
+      )
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `campus360_facility_report_${today()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    notify('Report exported to CSV');
+    setDownloadMsg('CSV Downloaded!');
+    setTimeout(() => setDownloadMsg(''), 2500);
+  };
+
+  const printReport = () => {
+    window.print();
+  };
+
+  return (
+    <div className="fade-in">
+      <div className="bar-row" style={{ justifyContent: 'flex-end', marginBottom: 4 }}>
+        <button className="ghost" onClick={printReport}>
+          🖨️ Print / Save PDF
+        </button>
+        <button onClick={exportCSV}>
+          📥 Export CSV {downloadMsg && `(${downloadMsg})`}
+        </button>
+      </div>
+
+      <div className="grid2">
+        <div className="card">
+          <h2>Approved Booking Hours by Building</h2>
+          <Bars data={rows.map(r => ({ l: r.b.code, v: r.hrs }))} />
+        </div>
+        <div className="card">
+          <h2>Maintenance Work Orders by Category</h2>
+          <Bars
+            data={CATS.map(c => ({
+              l: c.slice(0, 5),
+              v: db.requests.filter(m => m.cat === c).length
+            }))}
+          />
+        </div>
+      </div>
+
+      <div className="grid2">
+        <div className="card">
+          <h2>Maintenance Requests by Priority</h2>
+          <Donut
+            parts={PRI.map(p => ({
+              l: p,
+              v: db.requests.filter(m => m.priority === p).length,
+              c: TONE[p]
+            }))}
+          />
+        </div>
+        <div className="card">
+          <h2>Facilities Space Distribution</h2>
+          <Donut
+            parts={[
+              { l: 'Classrooms', v: db.rooms.filter(r => r.type === 'Classroom').length, c: '#4f8a7b' },
+              { l: 'Laboratories', v: db.rooms.filter(r => r.type === 'Laboratory').length, c: '#8a6fb8' }
+            ]}
+          />
+        </div>
+      </div>
+
+      <div className="card wrap">
+        <h2>University Campus Buildings & Facilities Metrics</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Building</th>
+              <th>Rooms</th>
+              <th>Labs</th>
+              <th>Equipment Readiness</th>
+              <th>Open Requests</th>
+              <th>Approved Booking Hours</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(r => (
+              <tr key={r.b.code}>
+                <td>
+                  <b>{r.b.name}</b> ({r.b.code})
+                </td>
+                <td>{r.rooms}</td>
+                <td>{r.labs}</td>
+                <td>
+                  {r.ready === null ? (
+                    <span className="muted">N/A</span>
+                  ) : (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div
+                        style={{
+                          background: '#eef3f0',
+                          borderRadius: 6,
+                          height: 8,
+                          width: 120,
+                          overflow: 'hidden'
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: `${r.ready}%`,
+                            background: r.ready > 75 ? '#5a9a6e' : '#d69a3c',
+                            height: 8,
+                            borderRadius: 6
+                          }}
+                        />
+                      </div>
+                      <span className="muted" style={{ minWidth: 32 }}>
+                        {r.ready}%
+                      </span>
+                    </div>
+                  )}
+                </td>
+                <td>{r.open}</td>
+                <td>{r.hrs} hrs</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE: Notifications & Activity Log
+   ============================================================ */
+function Notes({ db, alerts, mutate, notify, go }) {
+  const clearHistory = () => {
+    mutate(d => ({ ...d, activity: [] }), 'Activity history cleared');
+    notify('Activity history cleared');
+  };
+
+  return (
+    <div className="fade-in">
+      <div className="grid2">
+        <div className="card">
+          <h2>
+            <span>🔔 Active Campus Alerts ({alerts.length})</span>
+          </h2>
+          <div className="list">
+            {alerts.map((a, i) => (
+              <div
+                className="it"
+                key={i}
+                style={{ cursor: a.page ? 'pointer' : 'default' }}
+                onClick={() => a.page && go(a.page)}
+                title={a.page ? 'Click to navigate' : ''}
+              >
+                <span style={{ fontSize: 18 }}>{a.i}</span>
+                <div style={{ flex: 1 }}>
+                  <b>{a.t}</b>
+                  <div className="muted">{a.sub}</div>
+                </div>
+                {a.page && <button className="ghost">Go →</button>}
+              </div>
+            ))}
+            {!alerts.length && <Empty msg="All clear! No active alerts or pending actions required." />}
+          </div>
+        </div>
+
+        <div className="card">
+          <h2>
+            <span>📜 System Activity Log</span>
+            {db.activity.length > 0 && (
+              <button className="ghost danger" onClick={clearHistory}>
+                Clear Log
+              </button>
+            )}
+          </h2>
+          <div className="list">
+            {db.activity.map(a => (
+              <div className="it" key={a.id}>
+                <span className="dot" style={{ background: '#4f8a7b' }} />
+                <div style={{ flex: 1 }}>
+                  <div>{a.text}</div>
+                  <div className="muted">{a.t}</div>
+                </div>
+              </div>
+            ))}
+            {!db.activity.length && <Empty msg="No activity recorded yet." />}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   Main Application Shell
+   ============================================================ */
+function App() {
+  const [db, setDb] = useState(loadDB);
+  const [page, setPage] = useState('dash');
+  const [pref, setPref] = useState(null);
+  const [bell, setBell] = useState(false);
+  const [nav, setNav] = useState(false);
+  const [toast, setToast] = useState('');
+  const [dark, setDark] = useState(() => localStorage.getItem(DARK_KEY) === '1');
+
+  // Persistence
+  useEffect(() => {
+    saveDB(db);
+  }, [db]);
+
+  useEffect(() => {
+    if (dark) {
+      document.body.classList.add('dark');
+      localStorage.setItem(DARK_KEY, '1');
+    } else {
+      document.body.classList.remove('dark');
+      localStorage.setItem(DARK_KEY, '0');
+    }
+  }, [dark]);
+
+  const mutate = (fn, text) => {
+    setDb(d => {
+      const n = fn(d);
+      return text
+        ? { ...n, activity: [{ id: uid(), text, t: stamp() }, ...n.activity].slice(0, 50) }
+        : n;
+    });
+  };
+
+  const notify = t => {
+    setToast(t);
+    clearTimeout(window._tt);
+    window._tt = setTimeout(() => setToast(''), 2600);
+  };
+
+  // Compile active alerts
+  const alerts = [
+    ...db.requests
+      .filter(m => m.priority === 'Urgent' && m.status !== 'Completed')
+      .map(m => ({
+        i: '🚨',
+        t: `Urgent Maintenance: ${m.title}`,
+        sub: `Room ${m.room} · ${m.by}`,
+        page: 'mx'
+      })),
+    ...db.requests
+      .filter(m => m.status === 'Pending')
+      .map(m => ({
+        i: '🔧',
+        t: `Pending Request: ${m.title}`,
+        sub: `Room ${m.room} · Category: ${m.cat}`,
+        page: 'mx'
+      })),
+    ...db.reservations
+      .filter(r => r.status === 'Pending')
+      .map(r => ({
+        i: '📅',
+        t: `Booking Awaiting Approval: ${r.room}`,
+        sub: `By ${r.who} for ${r.date} (${r.start}–${r.end})`,
+        page: 'res'
+      }))
+  ];
+
+  const go = p => {
+    setPage(p);
+    setNav(false);
+    setBell(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const reserve = code => {
+    setPref(code);
+    go('res');
+  };
+
+  const NAV = [
+    ['dash', '📊', 'Overview'],
+    ['bld', '🏛️', 'Buildings'],
+    ['cls', '🏫', 'Classrooms'],
+    ['lab', '🔬', 'Laboratories'],
+    ['eq', '⚙️', 'Equipment'],
+    ['mx', '🔧', 'Maintenance'],
+    ['res', '📅', 'Reservations'],
+    ['rep', '📈', 'Reports & Analytics'],
+    ['not', '🔔', 'Notifications']
+  ];
+
+  const title = NAV.find(n => n[0] === page)?.[2] || 'Campus360';
+  const P = { db, mutate, notify, go, reserve };
+
+  const resetData = () => {
+    if (confirm('Reset demo data to default university dataset? Any recent modifications will be overwritten.')) {
+      const fresh = JSON.parse(JSON.stringify(SEED));
+      setDb(fresh);
+      saveDB(fresh);
+      notify('Demo data restored successfully');
+    }
+  };
+
+  const exportBackupJSON = () => {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(db, null, 2));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute('href', dataStr);
+    dlAnchor.setAttribute('download', `campus360_backup_${today()}.json`);
+    dlAnchor.click();
+    notify('Backup JSON exported');
+  };
+
+  return (
+    <div className={'app' + (nav ? ' navopen' : '')}>
+      <aside className="side">
+        <div className="brand">
+          <span className="logo-icon">🎓</span>
+          <span>Campus<b>360</b></span>
+        </div>
+
+        {NAV.map(([k, i, l]) => {
+          let count = 0;
+          if (k === 'not') count = alerts.length;
+          if (k === 'mx') count = db.requests.filter(m => m.status === 'Pending').length;
+          if (k === 'res') count = db.reservations.filter(r => r.status === 'Pending').length;
+
+          return (
+            <button
+              key={k}
+              className={'nav' + (page === k ? ' on' : '')}
+              onClick={() => go(k)}
+            >
+              <span>{i}</span>
+              {l}
+              {count > 0 && <em>{count}</em>}
+            </button>
+          );
+        })}
+
+        <div className="side-foot">
+          <b>University Facilities Office</b>
+          <div>Interactive Demo · Persistent Storage</div>
+          <div className="foot-acts">
+            <button onClick={resetData}>Reset Demo Data</button>
+            <button onClick={exportBackupJSON}>Backup Database (JSON)</button>
+          </div>
+        </div>
+      </aside>
+
+      <div className="scrim" onClick={() => setNav(false)} />
+
+      <main>
+        <header className="top">
+          <button className="ghost burger" onClick={() => setNav(!nav)} title="Toggle menu">
+            ☰
+          </button>
+          <h1>{title}</h1>
+
+          <div className="top-actions">
+            <button
+              className="theme-toggle"
+              onClick={() => setDark(!dark)}
+              title="Toggle Light / Dark Mode"
+            >
+              {dark ? '☀️ Light' : '🌙 Dark'}
+            </button>
+
+            <div className="bellw">
+              <button
+                className="bell"
+                onClick={() => setBell(!bell)}
+                title="Notifications & Alerts"
+              >
+                🔔{alerts.length > 0 && <i>{alerts.length}</i>}
+              </button>
+
+              {bell && (
+                <div className="dd">
+                  <div className="dd-head">
+                    <span>Recent Alerts ({alerts.length})</span>
+                    <button className="ghost" style={{ padding: '2px 6px' }} onClick={() => setBell(false)}>
+                      ✕
+                    </button>
+                  </div>
+                  {alerts.slice(0, 5).map((a, i) => (
+                    <div
+                      key={i}
+                      className="ddi"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        if (a.page) go(a.page);
+                      }}
+                    >
+                      <span style={{ fontSize: 16 }}>{a.i}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 600 }}>{a.t}</div>
+                        <div className="muted">{a.sub}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {!alerts.length && <div className="ddi muted">All clear — no pending alerts</div>}
+                  <div className="dd-foot">
+                    <button className="ghost" onClick={() => go('not')}>
+                      View All Alerts & Activity Log →
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="avatar" title="Signed in as Facilities Manager">
+              FM
+            </div>
+          </div>
+        </header>
+
+        <div className="body">
+          {page === 'dash' && <Dash db={db} alerts={alerts} go={go} reserve={reserve} />}
+          {page === 'bld' && <Buildings {...P} />}
+          {page === 'cls' && <Rooms {...P} type="Classroom" />}
+          {page === 'lab' && <Rooms {...P} type="Laboratory" />}
+          {page === 'eq' && <Equip {...P} />}
+          {page === 'mx' && <Maint {...P} />}
+          {page === 'res' && <Res {...P} pref={pref} clear={() => setPref(null)} />}
+          {page === 'rep' && <Reports db={db} notify={notify} />}
+          {page === 'not' && <Notes db={db} alerts={alerts} mutate={mutate} notify={notify} go={go} />}
+        </div>
+      </main>
+
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+</body>
+</html>
